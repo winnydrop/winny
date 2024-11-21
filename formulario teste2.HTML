@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Online</title>
+    <style>
+        :root {
+            --base-font-size: 16px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: var(--base-font-size);
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .pedido {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .pedido select, .pedido input {
+            flex: 1 1 120px;
+            padding: 6px;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .pedido label {
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 4px;
+        }
+
+        .botoes button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .botoes button.adicionar {
+            background-color: #4CAF50;
+        }
+
+        .botoes button:hover {
+            opacity: 0.9;
+        }
+
+        .btn-concluir {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            border-radius: 6px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn-concluir:hover {
+            background-color: #1976d2;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --base-font-size: 14px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .pedido select, .pedido input {
+                flex: 1 1 100px;
+                padding: 4px;
+                font-size: 0.8rem;
+            }
+
+            .botoes button {
+                padding: 5px 8px;
+                font-size: 0.75rem;
+            }
+
+            .btn-concluir {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --base-font-size: 12px;
+            }
+
+            .pedido {
+                flex-direction: column;
+                gap: 5px;
+                padding: 8px;
+            }
+
+            .pedido select, .pedido input {
+                flex: 1 1 100%;
+                font-size: 0.75rem;
+            }
+
+            .botoes {
+                flex-wrap: wrap;
+                gap: 3px;
+            }
+
+            .botoes button {
+                flex: 1 1 48%;
+                padding: 4px;
+                font-size: 0.7rem;
+            }
+
+            .btn-concluir {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Formulário de Pedido</h1>
+
+    <form id="formPedido">
+        <div id="pedidos">
+            <!-- As linhas de pedidos serão adicionadas aqui -->
+        </div>
+
+        <button type="button" class="btn-concluir" onclick="concluirPedido()">Concluir Pedido</button>
+    </form>
+</div>
+
+<script>
+    let contadorPedidos = 0;
+
+    function adicionarPedido() {
+        contadorPedidos++;
+
+        const pedidoDiv = document.createElement("div");
+        pedidoDiv.classList.add("pedido");
+        pedidoDiv.innerHTML = `
+            <select name="modelo_${contadorPedidos}" required>
+                <option value="">Selecione o modelo</option>
+                <option value="Camiseta mas">Camiseta MASCULINA</option>
+                <option value="Camiseta fem">Camiseta FEMININA</option>
+                <option value="Camiseta inf">Camiseta INFANTIL</option>
+                <option value="Bluza Moleton">Bluza Moleton</option>
+                <option value="Calça Moleton">Calça Moleton</option>
+                <option value="Baby Look">Baby Look</option>
+            </select>
+            <select name="cor_${contadorPedidos}" required>
+                <option value="">Selecione a cor</option>
+                <option value="Verde">Verde</option>
+                <option value="Azul">Azul</option>
+                <option value="Vermelho">Vermelho</option>
+                <option value="Preto">Preto</option>
+            </select>
+            <select name="tamanho_${contadorPedidos}" required>
+                <option value="">Selecione o tamanho</option>
+                <option value="P">P</option>
+                <option value="M">M</option>
+                <option value="G">G</option>
+                <option value="GG">GG</option>
+            </select>
+            <label for="quantidade_${contadorPedidos}">Quantidade:</label>
+            <input type="text" name="quantidade_${contadorPedidos}" id="quantidade_${contadorPedidos}" min="1" max="3" required>
+            <div class="botoes">
+                <button type="button" class="adicionar" onclick="adicionarPedido()">Adicionar</button>
+                <button type="button" onclick="removerPedido(this)">Remover</button>
+            </div>
+        `;
+
+        document.getElementById("pedidos").appendChild(pedidoDiv);
+    }
+
+    function removerPedido(button) {
+        button.parentElement.parentElement.remove();
+    }
+
+    function concluirPedido() {
+        const form = document.getElementById('formPedido');
+        const formData = new FormData(form);
+
+        fetch('/enviar-pedido', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Pedido enviado com sucesso!');
+            form.reset();
+            document.getElementById("pedidos").innerHTML = '';
+            adicionarPedido();
+        })
+        .catch(error => {
+            console.error('Erro ao enviar o pedido:', error);
+            alert('Erro ao enviar o pedido.');
+        });
+    }
+
+    adicionarPedido();
+</script>
+
+</body>
+</html>
